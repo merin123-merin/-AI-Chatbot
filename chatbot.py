@@ -45,6 +45,16 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 
+#creating chat history
+if "messages" not in st.session_state:
+    st.session_state.messages=[]
+
+    #display the previous messages
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+        #accept user input
+user_input = st.chat_input("Type your message...")
 
 
 # ---------------------------------------------------------
