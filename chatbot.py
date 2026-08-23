@@ -76,7 +76,10 @@ st.markdown(
         font-weight: 700;
         line-height: 1.2;
         color: #183153;
-        margin-top: 10px;
+
+        /* Reduced top spacing to bring title
+           closer to the robot */
+        margin-top: -5px;
         margin-bottom: 10px;
     }
 
@@ -102,7 +105,10 @@ st.markdown(
         justify-content: center;
         align-items: center;
         width: 100%;
-        margin: 0 auto 10px auto;
+
+        /* Negative bottom margin moves the
+           heading closer to the robot */
+        margin: 0 auto -5px auto;
     }
 
     .animated-bot img {
@@ -178,7 +184,9 @@ st.markdown(
         .chatbot-title {
             font-size: 29px !important;
             line-height: 1.2 !important;
-            margin-top: 5px !important;
+
+            /* Keep title close to robot */
+            margin-top: -3px !important;
             margin-bottom: 8px !important;
         }
 
@@ -189,7 +197,9 @@ st.markdown(
 
         .animated-bot {
             margin-top: 0 !important;
-            margin-bottom: 5px !important;
+
+            /* Reduced gap between robot and heading */
+            margin-bottom: -3px !important;
         }
 
         .animated-bot img {
@@ -231,10 +241,17 @@ st.markdown(
 
         .chatbot-title {
             font-size: 25px !important;
+
+            /* Keep heading close to robot */
+            margin-top: -3px !important;
         }
 
         .chatbot-subtitle {
             font-size: 14px !important;
+        }
+
+        .animated-bot {
+            margin-bottom: -3px !important;
         }
 
         .animated-bot img {
@@ -258,30 +275,40 @@ st.markdown(
 # =========================================================
 
 try:
+
     with open("assets/animated_bot.gif", "rb") as f:
         gif = base64.b64encode(f.read()).decode()
 
     st.markdown(
         f"""
         <div class="animated-bot">
-            <img src="data:image/gif;base64,{gif}" alt="Animated chatbot robot">
+            <img
+                src="data:image/gif;base64,{gif}"
+                alt="Animated chatbot robot"
+            >
         </div>
         """,
         unsafe_allow_html=True
     )
 
 except FileNotFoundError:
+
     st.warning("Animated bot image was not found.")
 
 
 # =========================================================
-# TITLE AND SUBTITLE
+# TITLE
 # =========================================================
 
 st.markdown(
     '<div class="chatbot-title">Your Personal Chatbot</div>',
     unsafe_allow_html=True
 )
+
+
+# =========================================================
+# SUBTITLE
+# =========================================================
 
 st.markdown(
     '<div class="chatbot-subtitle">Ask me anything!</div>',
@@ -294,6 +321,7 @@ st.markdown(
 # =========================================================
 
 if "messages" not in st.session_state:
+
     st.session_state.messages = []
 
 
@@ -320,7 +348,10 @@ user_input = st.chat_input("Type your message...")
 
 if user_input:
 
+    # -----------------------------------------------------
     # Save user message
+    # -----------------------------------------------------
+
     st.session_state.messages.append(
         {
             "role": "user",
@@ -328,7 +359,11 @@ if user_input:
         }
     )
 
+
+    # -----------------------------------------------------
     # Generate AI response
+    # -----------------------------------------------------
+
     try:
 
         response = client.models.generate_content(
@@ -339,6 +374,7 @@ if user_input:
         ai_message = response.text
 
         if not ai_message:
+
             ai_message = "Sorry, I couldn't generate a response."
 
     except Exception as e:
@@ -346,7 +382,10 @@ if user_input:
         ai_message = f"Error: {e}"
 
 
+    # -----------------------------------------------------
     # Save AI response
+    # -----------------------------------------------------
+
     st.session_state.messages.append(
         {
             "role": "assistant",
@@ -354,7 +393,11 @@ if user_input:
         }
     )
 
+
+    # -----------------------------------------------------
     # Refresh so both messages appear
+    # -----------------------------------------------------
+
     st.rerun()
 
 
