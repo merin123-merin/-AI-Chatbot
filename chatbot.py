@@ -108,7 +108,7 @@ st.markdown(
 
         /* Negative bottom margin moves the
            heading closer to the robot */
-        margin: 0 auto -5px auto;
+        margin: 0 auto -15px auto;
     }
 
     .animated-bot img {
