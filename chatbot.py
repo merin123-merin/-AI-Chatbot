@@ -28,13 +28,6 @@ st.markdown(
 )
 
 
-st.markdown("""
-<div class="animated-bot">
-    <img src="data:image/gif = base64.b64encode(f.read()).decode()/>
-
-</div>
-""", unsafe_allow_html=True)
-
 
 st.markdown(f"""
 <style>
