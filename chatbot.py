@@ -17,13 +17,24 @@ api_key = os.getenv("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
 
 st.set_page_config(page_title="Chatbot with Streamlit and GEMINI",page_icon="robot_face:")
-st.title("Your Personal Chatbot")
-st.write("Ask me anything!")
+st.markdown(
+    '<div class="chatbot-title">Your Personal Chatbot</div>',
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    '<div class="chatbot-subtitle">Ask me anything!</div>',
+    unsafe_allow_html=True
+)
 
 
-# Animated bot
-with open("assets/animated_bot.gif", "rb") as f:
-    gif = base64.b64encode(f.read()).decode()
+st.markdown("""
+<div class="animated-bot">
+    <img src="data:image/gif = base64.b64encode(f.read()).decode()/>
+
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown(f"""
 <style>
