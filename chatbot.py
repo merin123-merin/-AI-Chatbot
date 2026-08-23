@@ -32,9 +32,10 @@ st.markdown(
 st.markdown(f"""
 <style>
 .animated-bot {{
-    position: fixed;
-    top: 50px;
-    left: 10px;
+    position: absolute;
+    left: 50px;
+    top: 100px;
+
     z-index: 999;
 }}
 
