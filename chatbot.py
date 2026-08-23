@@ -77,8 +77,7 @@ st.markdown(
         line-height: 1.2;
         color: #183153;
 
-        /* Reduced top spacing to bring title
-           closer to the robot */
+        /* Keeps heading close to robot */
         margin-top: -5px;
         margin-bottom: 10px;
     }
@@ -106,8 +105,8 @@ st.markdown(
         align-items: center;
         width: 100%;
 
-        /* Negative bottom margin moves the
-           heading closer to the robot */
+        /* Change this value to adjust distance
+           between robot and heading */
         margin: 0 auto -15px auto;
     }
 
@@ -184,8 +183,6 @@ st.markdown(
         .chatbot-title {
             font-size: 29px !important;
             line-height: 1.2 !important;
-
-            /* Keep title close to robot */
             margin-top: -3px !important;
             margin-bottom: 8px !important;
         }
@@ -198,8 +195,8 @@ st.markdown(
         .animated-bot {
             margin-top: 0 !important;
 
-            /* Reduced gap between robot and heading */
-            margin-bottom: -3px !important;
+            /* Robot closer to heading on mobile */
+            margin-bottom: -10px !important;
         }
 
         .animated-bot img {
@@ -241,8 +238,6 @@ st.markdown(
 
         .chatbot-title {
             font-size: 25px !important;
-
-            /* Keep heading close to robot */
             margin-top: -3px !important;
         }
 
@@ -251,7 +246,7 @@ st.markdown(
         }
 
         .animated-bot {
-            margin-bottom: -3px !important;
+            margin-bottom: -8px !important;
         }
 
         .animated-bot img {
@@ -321,7 +316,6 @@ st.markdown(
 # =========================================================
 
 if "messages" not in st.session_state:
-
     st.session_state.messages = []
 
 
@@ -349,7 +343,7 @@ user_input = st.chat_input("Type your message...")
 if user_input:
 
     # -----------------------------------------------------
-    # Save user message
+    # SAVE USER MESSAGE
     # -----------------------------------------------------
 
     st.session_state.messages.append(
@@ -361,20 +355,60 @@ if user_input:
 
 
     # -----------------------------------------------------
-    # Generate AI response
+    # CREATE FULL CONVERSATION HISTORY
+    # -----------------------------------------------------
+    #
+    # This is the important part.
+    #
+    # Previously, only "user_input" was sent to Gemini.
+    # Now the complete conversation is sent.
+    #
+    # This allows Gemini to understand questions such as:
+    #
+    # User: Tell me about Python.
+    # Bot: Python is a programming language...
+    # User: What are its advantages?
+    #
+    # Gemini can now understand that "its" means Python.
+    # -----------------------------------------------------
+
+    conversation = []
+
+    for message in st.session_state.messages:
+
+        # Streamlit uses "assistant"
+        # Gemini uses "model"
+        if message["role"] == "assistant":
+            role = "model"
+        else:
+            role = "user"
+
+        conversation.append(
+            {
+                "role": role,
+                "parts": [
+                    {
+                        "text": message["content"]
+                    }
+                ]
+            }
+        )
+
+
+    # -----------------------------------------------------
+    # GENERATE AI RESPONSE
     # -----------------------------------------------------
 
     try:
 
         response = client.models.generate_content(
             model="gemini-3.5-flash-lite",
-            contents=user_input
+            contents=conversation
         )
 
         ai_message = response.text
 
         if not ai_message:
-
             ai_message = "Sorry, I couldn't generate a response."
 
     except Exception as e:
@@ -383,7 +417,7 @@ if user_input:
 
 
     # -----------------------------------------------------
-    # Save AI response
+    # SAVE AI RESPONSE
     # -----------------------------------------------------
 
     st.session_state.messages.append(
@@ -395,7 +429,7 @@ if user_input:
 
 
     # -----------------------------------------------------
-    # Refresh so both messages appear
+    # REFRESH PAGE
     # -----------------------------------------------------
 
     st.rerun()
@@ -427,6 +461,8 @@ st.markdown(
 
 if clear_chat:
 
+    # Delete conversation history
     st.session_state.messages = []
 
+    # Refresh application
     st.rerun()
