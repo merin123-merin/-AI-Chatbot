@@ -1,5 +1,6 @@
 from google import genai
 import os
+import requests
 from dotenv import load_dotenv
 import streamlit as st
 import base64
