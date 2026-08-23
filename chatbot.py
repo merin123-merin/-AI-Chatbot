@@ -43,10 +43,12 @@ st.markdown(f"""
 }}
 </style>
 
+st.markdown("""
 <div class="animated-bot">
-    <img src="data:image/gif;base64,{gif}">
+    <img src="data:image/gif;base64,..." />
 </div>
 """, unsafe_allow_html=True)
+
 
 st.markdown("""
 <style>
