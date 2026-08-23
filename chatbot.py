@@ -45,41 +45,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 
-# Create chat history
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
-# Display previous messages
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
-
-# Get user input
-user_input = st.chat_input("Type your message...")
-
-if user_input:
-    # Add user message to history
-    st.session_state.messages.append({
-        "role": "user",
-        "content": user_input
-    })
-
-    # Display user message immediately
-    with st.chat_message("user"):
-        st.markdown(user_input)
-
-    # Generate chatbot response
-    response = get_response(user_input)
-
-    # Add chatbot response to history
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": response
-    })
-
-    # Display chatbot response
-    with st.chat_message("assistant"):
-        st.markdown(response)
 
 # ---------------------------------------------------------
 # CLEAR CHAT BUTTON
